@@ -74,10 +74,10 @@
                                 <a class="btn btn-link" href="login/google"> 
                                     <i class="fab fa-google"></i>
                                 </a>
-                                {{-- |
+                                |
                                 <a class="btn btn-link" href="login/facebook"> 
                                     <i class="fab fa-facebook"></i>
-                                </a> --}}
+                                </a>
                             </div>
                         </div>
                     </form>
