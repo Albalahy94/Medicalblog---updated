@@ -61,7 +61,7 @@
       @enderror
 @endif
 
-
+{{-- 
       <div class="mb-3">
         <label for="" class="form-label">{{__('admin/editmember.password')}}  </label>
         <input value="{{$allUsers->password}}"  type="password" name="password" class="form-control" id="" >
@@ -72,9 +72,9 @@
           {{$message}}
         </div>
           @enderror
-  @endif
+  @endif --}}
 
-  
+{{--   
   <div class="mb-3">
     <label for="password-confirm" class="form-label ">{{ __('admin/editmember.Confirm Password') }}</label>
 
@@ -88,7 +88,7 @@
     {{$message}}
   </div>
     @enderror
-@endif
+@endif --}}
 
 
       

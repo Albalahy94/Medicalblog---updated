@@ -166,7 +166,7 @@ class AdminController extends Controller
                     $post->update([
                         'name' => $request->name,
                         'email' => $request->email,
-                        'password' => bcrypt($request->password),
+                        // 'password' => bcrypt($request->password),
                         'pending' => $request->pending,
                     ]);
                     // $post->name = $request->name;
