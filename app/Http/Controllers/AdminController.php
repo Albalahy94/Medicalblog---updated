@@ -45,41 +45,41 @@ class AdminController extends Controller
     // }
     // public function login(UserValidation $req)
     // {
-        # code...
+    # code...
 
-        // $credentials = $req->only('email', 'password');
-        // Auth::attempt($credentials);
+    // $credentials = $req->only('email', 'password');
+    // Auth::attempt($credentials);
 
-        // if (Auth::guard('admin')) {
+    // if (Auth::guard('admin')) {
 
-        //     return redirect()->intended('/admin/dash');
-        // }
-        // return back()->withInput($req->only('email', 'remember'));
-
-
-
-        // Auth::viaRequest('admin', function (Request $request) {
-        //     return Admin::where('token', $request->token)->first();
-        // });
-        // if (Auth::guard('admin')) {
-
-        //     return redirect()->intended('/admin/dash');
-        // }
-        // return back()->withInput($req->only('email', 'remember'));
+    //     return redirect()->intended('/admin/dash');
+    // }
+    // return back()->withInput($req->only('email', 'remember'));
 
 
 
-        // $email =        Admin::where('email', $req->email)->get('email')[0]->email;
-        // $password = Admin::where('password', $req->password)->get('password')[0]->password;
-        // // return $email . $password;
-        // if (($email == $req->email)) {
-        //     if ($password == $req->password) {
+    // Auth::viaRequest('admin', function (Request $request) {
+    //     return Admin::where('token', $request->token)->first();
+    // });
+    // if (Auth::guard('admin')) {
 
-        //         return view('admin.dash');
-        //     }
-        // } else {
-        //     return redirect()->back();
-        // } 
+    //     return redirect()->intended('/admin/dash');
+    // }
+    // return back()->withInput($req->only('email', 'remember'));
+
+
+
+    // $email =        Admin::where('email', $req->email)->get('email')[0]->email;
+    // $password = Admin::where('password', $req->password)->get('password')[0]->password;
+    // // return $email . $password;
+    // if (($email == $req->email)) {
+    //     if ($password == $req->password) {
+
+    //         return view('admin.dash');
+    //     }
+    // } else {
+    //     return redirect()->back();
+    // } 
     // }
     public function dash()
     {
@@ -92,7 +92,12 @@ class AdminController extends Controller
         //     } elseif ($pending == 0) {
 
         //         if ($userid == 1) {
-        return view('admin.dash');
+        $allposts = Post::select('*')->get();
+        $allUsers = User::select('*')->get();
+        $admins = User::where('admin_status', '=', '1')->get();
+        $pending = User::where('pending', '=', '1')->get();
+
+        return view('admin.dash', ['allposts' => $allposts, 'allUsers' => $allUsers, 'admins' => $admins, 'pending' => $pending]);
         //         }
         //     }
         // }
