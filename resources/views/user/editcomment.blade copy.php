@@ -44,7 +44,7 @@
                   <div class="card mb-2">
                       
                   <div class="small text-muted ">{{$comment->content}} </div>
-                  <div class="small text-muted">{{__('Created at : ')}}{{$comment->created_at}} </div>
+                  <div class="small text-muted">{{__('Created by : ')}}{{$comment->created_at}} </div>
                   <div class="small text-muted">{{__('Commented by : ')}}{{$comment->getUsers->name}} </div>
                 
                   @if (Auth::user()->id== $comment->user_id)
@@ -71,17 +71,15 @@
               @endif
 
 
+                    <div class="card-body">
+                      <form action="{{Url('showpost').'/'.$post->id.'/'.('comment').'/'.$comment->id}}"  method="get">
+                      <div class="small text-muted"> Comment</div>
+                      <input style=" width: 100%;" value="{{$comment->content}}" name="content" type="text">
+                      <input type="hidden" name="post_id" value="{{$post->id}}">
 
-              <div class="card-body">
-                <form action="{{route('updatecomment',$comments_with_user_only->id)}}"  method="get">
-                  @csrf
-                <div class="small text-muted"> Comment</div>
-                <input style=" width: 100%;" value="{{$comments_with_user_only->content}}" name="content" type="text">
-                <input type="hidden" name="post_id" value="{{$post->id}}">
+                      </form>
 
-                </form>
-
-            </div>
+                  </div>
 
                   </div>
             </div>

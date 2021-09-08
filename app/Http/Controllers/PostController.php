@@ -460,15 +460,16 @@ class PostController extends Controller
     // {
     //     return 's';
     // }
-    public function editComment($comment_id)
+    public function editComment($post_id, $comment_id)
     {
         $user = Auth::user()->id;
-        $new =  Post::findorfail($comment_id);
+        $new =  Post::findorfail($post_id);
         $comments = Comment::select('*')->where('post_id', $comment_id)->get();
         // $commentswithuser = Comment::with(['getUsers' => function ($q) {
         //     // $q->select('*');
         // }])->All();
         $commentswithuser = Comment::with('getUsers')->where('post_id', $comment_id)->get();
+        $comments_with_user_only = Comment::with('getUsers')->find($comment_id);
         // $commentswithuser[0]->getUsers->name;
         // return response()->json($commentswithuser);
         return view(
@@ -477,6 +478,7 @@ class PostController extends Controller
                 'post' =>  $new,
                 'comments' =>  $comments,
                 'commentswithuser' =>  $commentswithuser,
+                'comments_with_user_only' =>  $comments_with_user_only,
             ]
         );
     }
@@ -484,7 +486,7 @@ class PostController extends Controller
     {
         $user_id = Auth::user()->id;
         $post_id = $request->post_id;
-        Comment::where('id', $comment_id);
+        // Comment::where('id', $comment_id);
         $comment = Comment::where('id', $comment_id)->update([
             'user_id' => $user_id,
             'post_id' => $post_id,
