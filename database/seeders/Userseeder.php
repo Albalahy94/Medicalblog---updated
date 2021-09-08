@@ -25,14 +25,14 @@ class Userseeder extends Seeder
                     'password'  => bcrypt('01230123'),
                 ],
                 [
-                    'name' => 'said',
+                    'name' => 'said2',
                     'admin_status' => '0',
                     'pending' => '0',
                     'email' => 'said2@said2',
                     'password'  => bcrypt('01230123'),
                 ],
                 [
-                    'name' => 'said',
+                    'name' => 'said1',
                     'admin_status' => '1',
                     'pending' => '0',
                     'email' => 'said1@said1',
