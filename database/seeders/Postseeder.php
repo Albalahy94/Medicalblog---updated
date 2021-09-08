@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Database\Seeder;
 
 class Postseeder extends Seeder
@@ -14,7 +16,7 @@ class Postseeder extends Seeder
     public function run()
     {
 
-        DB::table('users')->insert(
+        DB::table('posts')->insert(
             [
                 [
                     'name' => 'said said',
