@@ -107,6 +107,11 @@
                         </form>
                     </div>
                 </li>
+                <li>
+                    <a id="navbarDropdown" class="nav-link " href="{{route('show')}}" role="button" >
+                        {{__('My Posts')}}
+                    </a>
+                </li>
             @endguest
         </ul>
          

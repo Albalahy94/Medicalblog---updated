@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InputValidation;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -19,6 +20,11 @@ use function PHPUnit\Framework\isEmpty;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'pending'])->except('allPosts');
+    }
 
     /**
      * Display a listing of the resource.
@@ -122,7 +128,7 @@ class PostController extends Controller
                     //     $new = User::find($userid)->getPosts[0]->user_id;
                     //     return             $new;
                     $new = Post::where('user_id', $userid)->get();
-                       $user_Key = Auth::user('id')->id;
+                    $user_Key = Auth::user('id')->id;
 
                     $post = new Post;
                     $post->user_id = $user_Key;
@@ -167,36 +173,94 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function showMyPosts()
     {
-        if (Auth::user()) {
-            $userid = Auth::user('id')->admin_status;
-            $pending = Auth::user('id')->pending;
+        // if (Auth::user()) {
+        //     $userid = Auth::user('id')->admin_status;
+        //     $pending = Auth::user('id')->pending;
 
-            if ($pending == 1) {
-                return redirect('/pending');
-            } elseif ($pending == 0) {
+        //     if ($pending == 1) {
+        //         return redirect('/pending');
+        //     } elseif ($pending == 0) {
 
-                if ($userid == 1) {
+        //         if ($userid == 1) {
+        // return
+        $user = Auth::user()->id;
+        // $new = User::find($user)->first()->getPosts;
+        // $new =  DB::table('posts')->where('user_id', $user)->get();
+        $new = Post::select('*')->where('user_id', $user)->get();
 
-                    $user = Auth::user()->id;
-                    // $new = User::find($user)->first()->getPosts;
-                    // $new =  DB::table('posts')->where('user_id', $user)->get();
-                    $new = Post::select('*')->where('user_id', $user)->get();
+        return view('user.dash', ['posts' =>  $new]);
+        //     } elseif ($userid == 0) {
+        //         $user = Auth::user('id')->id;
+        //         // return $user;
+        //         // $new = Post::Paginate(10);
+        //         $new = Post::select('*')->where('user_id', $user)->get();
+        //         // $new =  DB::table('posts')->where('user_id', $user) ;
 
-                    return view('user.dash', ['posts' =>  $new]);
-                } elseif ($userid == 0) {
-                    $user = Auth::user('id')->id;
-                    // return $user;
-                    // $new = Post::Paginate(10);
-                    $new = Post::select('*')->where('user_id', $user)->get();
-                    // $new =  DB::table('posts')->where('user_id', $user) ;
+        //         return view('user.dash', ['posts' =>  $new]);
+        //     }
+        // }
+        // }
+        // return redirect('login');
+    }
 
-                    return view('user.dash', ['posts' =>  $new]);
-                }
-            }
-        }
-        return redirect('login');
+    public function allPosts()
+    {
+        // if (Auth::user()) {
+        //     $userid = Auth::user('id')->admin_status;
+        //     $pending = Auth::user('id')->pending;
+
+        //     if ($pending == 1) {
+        //         return redirect('/pending');
+        //     } elseif ($pending == 0) {
+
+        //         if ($userid == 1) {
+
+        // $user = Auth::user()->id;
+        // // $new = User::find($user)->first()->getPosts;
+        // // $new =  DB::table('posts')->where('user_id', $user)->get();
+        // $new = Post::select('*')->where('user_id', $user)->get();
+        // $categories = Post::select('category')->where('user_id', $user)->get();
+        // $categories = Post::select('tags')->where('user_id', $user)->get();
+
+        // return view('home', [
+        //     'posts' =>  $new,
+        //     'categories' =>  $categories,
+
+        // ]);
+        //         } elseif ($userid == 0) {
+        // $user = Auth::user('id')->id;
+        // return $user;
+        // $new = Post::Paginate(10);
+        // $user = Auth::user()->id;
+        $new = Post::select('*')->get();
+        $post_comments = Post::with('getComments')->get();
+        // return  $post_comments[0]->getComments;
+        $categories = Post::select('category')->get();
+        $tags = Post::select('tag')->get();
+        $comments = Comment::select('*')->get();
+        $usercomments =  User::with('getComments')->select('*')->get();
+        // return  User::find($user)->getComments;
+
+        // $post_id= ;
+        // return $post_comments = Comment::where('post_id',$post_id)->get();
+        // return Post::All()->getComments;
+
+        // $new =  DB::table('posts')->where('user_id', $user) ;
+
+        return view('home',  [
+            'posts' =>  $new,
+            'categories' =>  $categories,
+            'tags' =>  $tags,
+            'comments' =>  $comments,
+            'post_comments' =>  $post_comments,
+
+        ]);
+        //         }
+        //     }
+        // }
+        // return redirect('login');
     }
 
 
@@ -210,20 +274,20 @@ class PostController extends Controller
 
     public function showPost($postid)
     {
-        if (Auth::user()) {
-            $userid = Auth::user('id')->admin_status;
-            $pending = Auth::user('id')->pending;
-
-            if ($pending == 1) {
-                return redirect('/pending');
-            } elseif ($pending == 0) {
-                Auth::user();
-                $new =  Post::findorfail($postid);
-                return view('user.showpost', ['post' =>  $new]);
-            }
-        } else {
-            return redirect('login');
-        }
+        $user = Auth::user()->id;
+        $new =  Post::findorfail($postid);
+        $comments = Comment::select('*')->where('post_id', $postid)->get();
+        // $commentswithuser = Comment::with(['getUsers' => function ($q) {
+        //     // $q->select('*');
+        // }])->All();
+        $commentswithuser = Comment::with('getUsers')->where('post_id', $postid)->get();
+        // $commentswithuser[0]->getUsers->name;
+        // return response()->json($commentswithuser);
+        return view('user.showpost', [
+            'post' =>  $new,
+            'comments' =>  $comments,
+            'commentswithuser' =>  $commentswithuser,
+        ]);
     }
 
 
@@ -378,5 +442,63 @@ class PostController extends Controller
         } else {
             return redirect('login');
         }
+    }
+    public function newComment(Request $request)
+    {
+        // return 's';
+        $user_id = Auth::user()->id;
+        $post_id = $request->post_id;
+        $comment = Comment::insert([
+            'user_id' => $user_id,
+            'post_id' => $post_id,
+            'content' => $request->content,
+
+        ]);
+        return back()->with(['success' => 'Comment Done']);
+    }
+    // public function storeComment()
+    // {
+    //     return 's';
+    // }
+    public function editComment($comment_id)
+    {
+        $user = Auth::user()->id;
+        $new =  Post::findorfail($comment_id);
+        $comments = Comment::select('*')->where('post_id', $comment_id)->get();
+        // $commentswithuser = Comment::with(['getUsers' => function ($q) {
+        //     // $q->select('*');
+        // }])->All();
+        $commentswithuser = Comment::with('getUsers')->where('post_id', $comment_id)->get();
+        // $commentswithuser[0]->getUsers->name;
+        // return response()->json($commentswithuser);
+        return view(
+            'user.editcomment',
+            [
+                'post' =>  $new,
+                'comments' =>  $comments,
+                'commentswithuser' =>  $commentswithuser,
+            ]
+        );
+    }
+    public function updateComment(Request $request, $comment_id)
+    {
+        $user_id = Auth::user()->id;
+        $post_id = $request->post_id;
+        Comment::where('id', $comment_id);
+        $comment = Comment::where('id', $comment_id)->update([
+            'user_id' => $user_id,
+            'post_id' => $post_id,
+            'content' => $request->content,
+
+        ]);
+        return redirect(('showpost') . '/' . $post_id);
+
+        // return back()->with(['success' => 'Comment Done']);
+    }
+    public function destroyComment($id)
+    {
+        $post = Comment::where('id', $id);
+        $post->delete();
+        return back()->with(['success' => 'Done']);
     }
 }

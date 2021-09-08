@@ -28,7 +28,7 @@ class InputValidation extends FormRequest
             'name' => 'required|min:4|max:255',
             // 'password' => 'required|string|min:8|confirmed',
             // 'email' => 'required|unique:users|max:255|email',
-            'description' => 'required|string|min:8|max:255',
+            'description' => 'required|string|min:8|max:2500',
             'tag' => 'required|string|min:8|max:100',
             'category' => 'required|string|min:8|max:100',
             'image' => 'image|mimes:jpeg,png,jpg|max:2050',

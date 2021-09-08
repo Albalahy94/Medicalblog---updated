@@ -26,5 +26,5 @@ class PendingUsers
         return redirect('pending-members');
 
         // abort(403);
-        }
+    }
 }

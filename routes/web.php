@@ -29,14 +29,15 @@ Route::group([
     //     return view('pending');
     // } elseif ($pending == 0) {
 
-    Route::get('/', [App\Http\Controllers\PostController::class, 'show'])->name('show');
+    Route::get('/', [App\Http\Controllers\PostController::class, 'allPosts'])->name('all-posts');
+    Route::get('/my-posts', [App\Http\Controllers\PostController::class, 'showMyPosts'])->name('show');
 
     Auth::routes();
-    Route::view('pending', 'pending');
+    Route::view('pending-members', 'pending');
 
     // Route::get('/home', )->name('home');
     // Route::get('/{id}', [App\Http\Controllers\PostController::class, 'index'])->name('home');
-    Route::get('/show', [App\Http\Controllers\PostController::class, 'show'])->name('show');
+    Route::get('/show', [App\Http\Controllers\PostController::class, 'showMyPosts'])->name('show');
     // Route::get('/show', 'PostController@show')->name('show');
     Route::get('/showpost/{postid}', [App\Http\Controllers\PostController::class, 'showPost'])->name('showpost');
     Route::get('/newpost', [App\Http\Controllers\PostController::class, 'create'])->name('newpost');
@@ -47,9 +48,17 @@ Route::group([
     Route::get('/delete/{id}', [App\Http\Controllers\PostController::class, 'destroy'])->name('destroy');
 
 
+    // comment
+    Route::get('/comment', [App\Http\Controllers\PostController::class, 'newComment'])->name('newcomment');
+    // Route::post('/storeComment', [App\Http\Controllers\PostController::class, 'storeComment'])->name('storecomment');
+
+    Route::get('/showpost/{postid}/comment/{comment_id}', [App\Http\Controllers\PostController::class, 'editComment'])->name('editcomment');
+    Route::get('/comment-update/{comment_id}', [App\Http\Controllers\PostController::class, 'updateComment'])->name('updatecomment');
+    Route::get('/comment-delete/{comment_id}', [App\Http\Controllers\PostController::class, 'destroyComment'])->name('destroycomment');
+
     // Route::get('admin/dash', [App\Http\Controllers\PostController::class, 'index'])->name('index');
     Route::get('/home', [App\Http\Controllers\PostController::class, 'index'])->name('index');
-    Route::get('admin/', [App\Http\Controllers\PostController::class, 'index'])->name('index');
+    Route::get('admin/', [App\Http\Controllers\AdminController::class, 'dash'])->name('dash');
 
     // // admin login
     // Route::get('admin/login', [App\Http\Controllers\AdminController::class, 'adminlogin']);
