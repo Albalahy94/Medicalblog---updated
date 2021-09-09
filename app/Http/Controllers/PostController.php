@@ -23,7 +23,7 @@ class PostController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'pending'])->except('allPosts', 'showPost');
+        $this->middleware(['auth', 'pending'])->except('allPosts', 'showPost', 'searchCategory', 'searchTag');
     }
 
     /**
