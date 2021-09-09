@@ -151,12 +151,22 @@
                     <p class="card-text">{{__('category:')}}<br>{{Str::limit($post->category,  250, '...') }} </p>
                     <p class="card-text">{{__('tag:')}}<br>{{Str::limit($post->tag  ,  250, '...') }} </p>
                                 
-            @if (Auth::user()->id==$post->user_id)
+            @if (Auth::user() && Auth::user()->id==$post->user_id)
                 
             <div>
               <div class="row justify-content-center">{{__('Edit:')}}
                 <center>
                 <a  href="{{Url('editpost').'/'.$post->id}}"> <i class="far fa-edit"></i> </a>
+                <a  href="{{Url('delete').'/'.$post->id}}" onClick="return confirm('Are you sure ?')"> <i class="far fa-trash-alt"></i> </a>
+
+                </center>
+                </div>
+
+            </div>
+            @elseif (Auth::user() && Auth::user()->admin_status== 1)
+            <div>
+              {{-- <div class="row justify-content-center">{{__('Edit:')}} --}}
+                <center>
                 <a  href="{{Url('delete').'/'.$post->id}}" onClick="return confirm('Are you sure ?')"> <i class="far fa-trash-alt"></i> </a>
 
                 </center>
@@ -176,7 +186,7 @@
                   <div class="small text-muted">{{__('Created by : ')}}{{$comment->created_at}} </div>
                   <div class="small text-muted">{{__('Commented by : ')}}{{$comment->getUsers->name}} </div>
                 
-                  @if (Auth::user()->id== $comment->user_id)
+                  @if (Auth::user() && Auth::user()->id== $comment->user_id)
                 
                   <div>
                     {{-- <div class="row justify-content-center">{{__('Edit:')}} --}}
@@ -187,7 +197,7 @@
                       </center>
       
                   </div>
-                  @elseif (Auth::user()->admin_status== 1)
+                  @elseif (Auth::user() && Auth::user()->admin_status== 1)
                   <div>
                     {{-- <div class="row justify-content-center">{{__('Edit:')}} --}}
                       <center>
@@ -220,12 +230,11 @@
                   </div>
 
                   </div>
+                  <a href="{{route('newpost')}}"  class="btn btn-success">{{__('user/dash.Create New')}} </a>
+                  <a href="{{url('/')}}"  class="btn btn-dark">{{__('user/dash.Back To Home')}} </a>
             </div>
 
-            <a href="{{route('newpost')}}"  class="btn btn-success">{{__('user/dash.Create New')}} </a>
-            <br>
-            <a href="{{url('/')}}"  class="btn btn-dark">{{__('user/dash.Back To Home')}} </a>
-            </div>
+          </div>
 
             </div>
         </div>

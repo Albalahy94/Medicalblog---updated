@@ -23,7 +23,7 @@ class PostController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'pending'])->except('allPosts');
+        $this->middleware(['auth', 'pending'])->except('allPosts', 'showPost');
     }
 
     /**
@@ -274,7 +274,7 @@ class PostController extends Controller
 
     public function showPost($postid)
     {
-        $user = Auth::user()->id;
+        // $user = Auth::user()->id;
         $new =  Post::findorfail($postid);
         $comments = Comment::select('*')->where('post_id', $postid)->get();
         // $commentswithuser = Comment::with(['getUsers' => function ($q) {
