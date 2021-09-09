@@ -503,4 +503,42 @@ class PostController extends Controller
         $post->delete();
         return back()->with(['success' => 'Done']);
     }
+
+    public function searchCategory($search)
+    {
+        // return ($search);
+        $post = Post::where('category', $search)->get();
+        $post_comments = Post::with('getComments')->get();
+        $categories = Post::select('category')->get();
+        $tags = Post::select('tag')->get();
+        $comments = Comment::select('*')->get();
+        $usercomments =  User::with('getComments')->select('*')->get();
+
+        return view('home',  [
+            'posts' =>  $post,
+            'categories' =>  $categories,
+            'tags' =>  $tags,
+            'comments' =>  $comments,
+            'post_comments' =>  $post_comments,
+
+        ]);
+    }
+    public function searchTag($search)
+    {
+        $post = Post::where('tag', $search)->get();
+        $post_comments = Post::with('getComments')->get();
+        $categories = Post::select('category')->get();
+        $tags = Post::select('tag')->get();
+        $comments = Comment::select('*')->get();
+        $usercomments =  User::with('getComments')->select('*')->get();
+
+        return view('home',  [
+            'posts' =>  $post,
+            'categories' =>  $categories,
+            'tags' =>  $tags,
+            'comments' =>  $comments,
+            'post_comments' =>  $post_comments,
+
+        ]);
+    }
 }

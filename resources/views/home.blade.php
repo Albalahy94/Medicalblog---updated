@@ -153,10 +153,16 @@
                         <div class="card-header">Categories</div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <ul class="list-unstyled mb-0">
                                         @foreach ($categories as $category)
-                                        <li><a href="#!">{{$category}}</a></li>
+                                        <li><a style="
+                                            text-decoration: none;
+                                            color: #5c5757;
+                                            font-size: 19px;
+                                            font-weight: bold;
+                                        " 
+                                        href="{{route('category',$category->category)}}">{{$category->category}}</a></li>
                                             
                                         @endforeach
                                     </ul>
@@ -168,10 +174,16 @@
                         <div class="card-header">Tags</div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <ul class="list-unstyled mb-0">
                                         @foreach ($tags as $tag)
-                                        <li><a href="#!">{{$tag}}</a></li>
+                                        <li><a style="
+                                            text-decoration: none;
+                                            color: #5c5757;
+                                            font-size: 19px;
+                                            font-weight: bold;
+                                        " 
+                                         href="{{route('tag',$tag->tag)}}">{{$tag->tag}}</a></li>
                                             
                                         @endforeach
                                     </ul>

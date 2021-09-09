@@ -32,6 +32,8 @@ Route::group([
     Route::get('/', [App\Http\Controllers\PostController::class, 'allPosts'])->name('all-posts');
     Route::get('/home', [App\Http\Controllers\PostController::class, 'allPosts'])->name('index');
     Route::get('/my-posts', [App\Http\Controllers\PostController::class, 'showMyPosts'])->name('show');
+    Route::get('/search-category/{search}', [App\Http\Controllers\PostController::class, 'searchCategory'])->name('category');
+    Route::get('/search-tag/{search}', [App\Http\Controllers\PostController::class, 'searchTag'])->name('tag');
 
     Auth::routes();
     // Route::view('pending-members', 'pending');
