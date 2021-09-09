@@ -45,7 +45,22 @@
           @enderror
   @endif
 
-      <div class="mb-3">
+
+  
+  
+  <div class="mb-3">
+    <label for="" class="form-label"> {{__('admin/editmember.Pending')}}</label>
+    <input value="{{$allUsers->pending}}" type="number" maxlength="1" name="pending" class="form-control" id=""  >
+  </div>
+
+  @if ($errors->any())
+  @error('pending')
+  <div class="alert alert-danger">
+      {{$message}}
+    </div>
+      @enderror
+@endif
+      {{-- <div class="mb-3">
         <label for="" class="form-label">{{__('admin/editmember.password')}}  </label>
         <input value="{{$allUsers->password}}"  type="password" name="password" class="form-control" id="" >
       </div>
@@ -71,7 +86,7 @@
     {{$message}}
   </div>
     @enderror
-@endif
+@endif --}}
 
 
       

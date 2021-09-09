@@ -30,10 +30,17 @@ Route::group([
     // } elseif ($pending == 0) {
 
     Route::get('/', [App\Http\Controllers\PostController::class, 'allPosts'])->name('all-posts');
+    Route::get('/home', [App\Http\Controllers\PostController::class, 'allPosts'])->name('index');
     Route::get('/my-posts', [App\Http\Controllers\PostController::class, 'showMyPosts'])->name('show');
 
     Auth::routes();
-    Route::view('pending-members', 'pending');
+    // Route::view('pending-members', 'pending');
+    Route::get('/pending-members', function () {
+        if (Auth::user() && Auth::user()->pending == 0) {
+            return redirect('/');
+        }
+        return view('pending');
+    });
 
     // Route::get('/home', )->name('home');
     // Route::get('/{id}', [App\Http\Controllers\PostController::class, 'index'])->name('home');
@@ -57,7 +64,6 @@ Route::group([
     Route::get('/comment-delete/{comment_id}', [App\Http\Controllers\PostController::class, 'destroyComment'])->name('destroycomment');
 
     // Route::get('admin/dash', [App\Http\Controllers\PostController::class, 'index'])->name('index');
-    Route::get('/home', [App\Http\Controllers\PostController::class, 'index'])->name('index');
     Route::get('admin/', [App\Http\Controllers\AdminController::class, 'dash'])->name('dash');
 
     // // admin login

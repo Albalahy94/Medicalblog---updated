@@ -187,6 +187,15 @@
                       </center>
       
                   </div>
+                  @elseif (Auth::user()->admin_status== 1)
+                  <div>
+                    {{-- <div class="row justify-content-center">{{__('Edit:')}} --}}
+                      <center>
+                      <a  href="{{Url('comment-delete').'/'.$comment->id}}" onClick="return confirm('Are you sure ?')"> <i class="far fa-trash-alt"></i> </a>
+      
+                      </center>
+      
+                  </div>
                   @endif
 
                 </div>
