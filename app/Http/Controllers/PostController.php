@@ -234,7 +234,7 @@ class PostController extends Controller
         // return $user;
         // $new = Post::Paginate(10);
         // $user = Auth::user()->id;
-        $new = Post::select('*')->get();
+        $new = Post::select('*')->simplePaginate('5');
         $post_comments = Post::with('getComments')->get();
         // return  $post_comments[0]->getComments;
         $categories = Post::select('category')->get();

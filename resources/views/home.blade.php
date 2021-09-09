@@ -123,18 +123,27 @@
                         </div>
                     </div> --}}
                     <!-- Pagination-->
-                    <nav aria-label="Pagination">
+                    <div style="text-align: center">
+                        {!! $posts->onEachSide(5)->links() !!}
+
+                    </div>
+
+
+                    {{-- <nav aria-label="Pagination">
                         <hr class="my-0" />
                         <ul class="pagination justify-content-center my-4">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="{{ $posts->previousPageUrl() }}" tabindex="-1" aria-disabled="true">Newer</a></li>
+                            <li class="page-item"><a class="page-link" href="{{ $posts->links()->first_page_url }}">{{ $posts->firstItem() }}</a></li>
+                            @foreach ($posts as $link)
+                                
+                            <li class="page-item active" aria-current="page"><a class="page-link" href="{{ $link->nextPageUrl() }}">1</a></li>
+                            @endforeach
+                            <li class="page-item active" aria-current="page"><a class="page-link" href="{{ $posts->nextPageUrl() }}">1</a></li>
                             <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ $posts->lastPage() }}">{{ $posts->lastPage() }}</a></li>
+                            <li class="page-item"><a class="page-link" href="{{ $posts->nextPageUrl() }}">Older</a></li>
                         </ul>
-                    </nav>
+                    </nav> --}}
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
