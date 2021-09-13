@@ -1,1 +1,0 @@
-<php? function name(){ return 'said' ; }

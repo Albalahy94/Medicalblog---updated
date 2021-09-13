@@ -77,6 +77,45 @@
 
 
             <!-- Authentication Links -->
+            @auth
+            <li class="dropdown dropdown-notification nav-item  dropdown-notifications">
+                <a class="nav-link nav-link-label" href="#" data-toggle="dropdown">
+                    <i class="fa fa-bell"> </i>
+                    <span
+                        class="badge badge-pill badge-default badge-danger badge-default badge-up badge-glow   notif-count"
+                        data-count="0">0</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                    <li class="dropdown-menu-header">
+                        <h6 class="dropdown-header m-0 text-center">
+                            <span class="grey darken-2 text-center"> الرسائل</span>
+                        </h6>
+                    </li>
+                    <li class="scrollable-container ps-container ps-active-y media-list w-100">
+                        <a href="">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h6 class="media-heading text-right ">عنوان الاشعار </h6>
+                                    <p class="notification-text font-small-3 text-muted text-right"> نص الاشعار</p>
+                                    <small style="direction: ltr;">
+                                        <p class=" text-muted text-right"
+                                              style="direction: ltr;"> 20-05-2020 - 06:00 pm
+                                        </p>
+                                        <br>
+
+                                    </small>
+                                </div>
+                            </div>
+                        </a>
+
+                    </li>
+                    <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center"
+                                                        href=""> جميع الاشعارات </a>
+                    </li>
+                </ul>
+            </li>
+        @endauth
+
             @guest
                 @if (Route::has('login'))
                     <li class="nav-item">
@@ -133,7 +172,7 @@
    ">
       @include('../layouts/footer')
    </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{asset('js/scripts.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -142,5 +181,61 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="{{asset('js/datatables-simple-demo.js')}}"></script>
 
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://js.pusher.com/6.0/pusher.min.js"></script>
+
+<script>
+    
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+    
+    var pusher = new Pusher('b806b15dd1c82d80b53f', {
+        cluster: 'eu',
+        encrypted: false
+    });
+    var notificationsWrapper = $('.dropdown-notifications');
+var notificationsToggle = notificationsWrapper.find('a[data-toggle]');
+var notificationsCountElem = notificationsToggle.find('span[data-count]');
+var notificationsCount = parseInt(notificationsCountElem.data('count'));
+var notifications = notificationsWrapper.find('li.scrollable-container');
+
+// Subscribe to the channel we specified in our Laravel Event
+var channel = pusher.subscribe('new-notification');
+// Bind a function to a Event (the full Laravel class)
+channel.bind('App\\Events\\NotifyUsers', function (data) {
+    var existingNotifications = notifications.html();
+    var newNotificationHtml = `<a href="`+data.user_id+`"><div class="media-body"><h6 class="media-heading text-right">` + data.user_name + `</h6> <p class="notification-text font-small-3 text-muted text-right">` + data.comment + `</p><small style="direction: ltr;"><p class="media-meta text-muted text-right" style="direction: ltr;">` + data.date + data.time + `</p> </small></div></div></a>`;
+    notifications.html(newNotificationHtml + existingNotifications);
+    notificationsCount += 1;
+    notificationsCountElem.attr('data-count', notificationsCount);
+    notificationsWrapper.find('.notif-count').text(notificationsCount);
+    notificationsWrapper.show();
+});
+
+    // var channel = pusher.subscribe('notify-users');
+    // channel.bind('App\\Events\\NotifyUsers', function(data) {
+    // alert(JSON.stringify(data));
+    // });
+    </script>
+    
+{{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script>
+ 
+     // Enable pusher logging - don't include this in production
+     Pusher.logToConsole = true;
+ 
+     var pusher = new Pusher('b806b15dd1c82d80b53f', {
+        'cluster': 'eu',
+        'encrypted' :false,
+        forceTLS: true
+
+     });
+
+
+   </script>
+   --}}
+   {{-- <script src="{{asset('js/pusherNotifications.js')}}"></script> --}}
 </body>
 </html>

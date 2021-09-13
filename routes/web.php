@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\NotifyUsers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
@@ -17,6 +18,12 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('test', function () {
+    $user_id = '0';
+    event(new NotifyUsers('ddd'));
+    return "Event has been sent!";
+});
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),

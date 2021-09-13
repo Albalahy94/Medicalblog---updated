@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewMessage;
+use App\Events\NewNotification;
+use App\Events\NotifyUser;
+use App\Events\NotifyUsers;
 use App\Http\Requests\InputValidation;
 use App\Models\Comment;
 use App\Models\Post;
@@ -448,12 +452,20 @@ class PostController extends Controller
         // return 's';
         $user_id = Auth::user()->id;
         $post_id = $request->post_id;
-        $comment = Comment::insert([
+        $comment = Comment::create([
             'user_id' => $user_id,
             'post_id' => $post_id,
             'content' => $request->content,
 
         ]);
+        $data = [
+            'user_id' => Auth::id(),
+            'user_name'  => Auth::user()->name,
+            'content' => $request->content,
+            'post_id' => $post_id,
+        ];
+
+        event(new NotifyUsers($data));
         return back()->with(['success' => 'Comment Done']);
     }
     // public function storeComment()
