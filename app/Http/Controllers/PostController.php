@@ -8,6 +8,7 @@ use App\Events\NotifyUser;
 use App\Events\NotifyUsers;
 use App\Http\Requests\InputValidation;
 use App\Models\Comment;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -459,12 +460,13 @@ class PostController extends Controller
 
         ]);
         $data = [
-            'user_id' => Auth::id(),
+            'user_id' => $user_id,
             'user_name'  => Auth::user()->name,
             'content' => $request->content,
             'post_id' => $post_id,
         ];
 
+        Notification::insert($data);
         event(new NotifyUsers($data));
         return back()->with(['success' => 'Comment Done']);
     }
