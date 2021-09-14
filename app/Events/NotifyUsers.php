@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Carbon\Carbon;
 
-class NotifyUsers
+class NotifyUsers implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
